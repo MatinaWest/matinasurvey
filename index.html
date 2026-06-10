@@ -192,7 +192,7 @@ function gNext(){if(gSt<4){gSt++;renderPage('guest')}else show('done')}
 function sNext(){if(sSt<5){sSt++;renderPage('staff')}else show('done')}
 
 /* QR 생성 — 실제 배포 URL로 교체 */
-const BASE = 'https://matina.walkerhill.com/survey';
+const BASE = 'https://matinawest.github.io/matinasurvey/';
 const GU = BASE+'?type=guest';
 const SU = BASE+'?type=staff';
 function makeQR(boxId,url,urlEl){
