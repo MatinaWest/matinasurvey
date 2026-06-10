@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matina Lounge Survey</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR','Noto Sans SC','Noto Sans JP',sans-serif;background:#f5f5f4;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,.08);width:100%;max-width:520px;overflow:hidden}
+.pg{display:none}.pg.active{display:block}
+.lang-bar{display:flex;gap:6px;padding:.9rem 1.4rem .7rem;flex-wrap:wrap;border-bottom:1px solid #e5e4e2}
+.lb{padding:4px 13px;border-radius:20px;border:1px solid #d3d1c7;background:#fff;font-size:12px;font-weight:500;cursor:pointer;color:#5f5e5a;transition:all .15s}
+.lb:hover{background:#f1efe8}.lb.on{background:#1D9E75;border-color:#1D9E75;color:#fff}
+.hdr{padding:1.1rem 1.4rem .7rem;border-bottom:1px solid #e5e4e2;margin-bottom:1.1rem}
+.tag{display:inline-block;font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;margin-bottom:.55rem}
+.tg{background:#E1F5EE;color:#0F6E56}.ts{background:#EEEDFE;color:#3C3489}
+h1{font-size:18px;font-weight:500;color:#1a1a1a;margin-bottom:3px}
+.sub{font-size:12px;color:#888780}
+.pbw{padding:0 1.4rem .9rem}.pb{height:3px;background:#e5e4e2;border-radius:2px}
+.pf{height:3px;border-radius:2px;transition:width .3s}.pf.g{background:#1D9E75}.pf.s{background:#7F77DD}
+.qb{padding:0 1.4rem 1.1rem}
+.ql{font-size:11px;color:#888780;margin-bottom:.3rem}
+.qt{font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:.8rem}
+.stars{display:flex;gap:7px}
+.star{font-size:30px;cursor:pointer;color:#d3d1c7;transition:color .1s;user-select:none}
+.star.on{color:#EF9F27}
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.ro{border:1px solid #d3d1c7;border-radius:8px;padding:9px 12px;cursor:pointer;font-size:13px;color:#1a1a1a;transition:all .15s;display:flex;align-items:center;gap:7px}
+.ro:hover{border-color:#888780;background:#f9f9f8}.ro.sel{border-color:#1D9E75;background:#E1F5EE;color:#085041}
+.rd{width:12px;height:12px;border-radius:50%;border:1.5px solid currentColor;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.rd::after{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;display:none}
+.ro.sel .rd::after{display:block}
+textarea{width:100%;border:1px solid #d3d1c7;border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;color:#1a1a1a;background:#fff;resize:vertical;min-height:70px}
+textarea:focus{outline:none;border-color:#1D9E75}
+.ftr{padding:.9rem 1.4rem;border-top:1px solid #e5e4e2;display:flex;justify-content:space-between;align-items:center}
+.btn{padding:8px 20px;border-radius:8px;font-size:13px;cursor:pointer;border:1px solid #d3d1c7;background:#fff;color:#1a1a1a;transition:background .15s;font-family:inherit}
+.btn:hover{background:#f1efe8}.btn.pri{background:#1D9E75;border-color:#1D9E75;color:#fff}.btn.pri:hover{background:#0F6E56}
+.slbl{font-size:11px;color:#888780}
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:1.1rem 1.4rem}
+.sc{border:1px solid #d3d1c7;border-radius:12px;padding:1rem;cursor:pointer;transition:all .2s;background:#fff}
+.sc:hover{border-color:#888780;box-shadow:0 1px 6px rgba(0,0,0,.06)}
+.ci{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:.55rem}
+.cig{background:#E1F5EE;color:#0F6E56}.cis{background:#EEEDFE;color:#3C3489}
+.ct{font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:3px}
+.cd{font-size:11px;color:#888780;line-height:1.5}
+.ck{font-size:10px;color:#888780;margin-top:9px;padding-top:7px;border-top:1px solid #e5e4e2}
+.htop{padding:1.1rem 1.4rem .4rem}
+.httl{font-size:16px;font-weight:500;color:#1a1a1a;margin-bottom:3px}
+.hsub{font-size:12px;color:#888780}
+.qrsec{border-top:1px solid #e5e4e2;padding:.9rem 1.4rem}
+.qrttl{font-size:12px;font-weight:500;color:#1a1a1a;margin-bottom:.65rem}
+.qrgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.qrc{border:1px solid #d3d1c7;border-radius:8px;padding:.65rem;text-align:center}
+.qrl{font-size:11px;color:#888780;margin-bottom:.4rem}
+.qrbox{width:100px;height:100px;margin:0 auto .4rem;border:1px solid #e5e4e2;border-radius:4px;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center}
+.qrurl{font-size:10px;color:#888780;word-break:break-all;line-height:1.4}
+.anote{padding:.65rem 1.4rem;background:#f9f9f8;border-radius:8px;margin:.4rem 1.4rem .9rem;font-size:11px;color:#888780;line-height:1.6}
+.dwrap{padding:2.5rem 1.4rem;text-align:center}
+.dic{width:48px;height:48px;border-radius:50%;background:#E1F5EE;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:24px;color:#1D9E75}
+.dttl{font-size:16px;font-weight:500;color:#1a1a1a;margin-bottom:5px}
+.dsub{font-size:13px;color:#888780;margin-bottom:1.4rem;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="card">
+
+<div id="home" class="pg active">
+  <div class="lang-bar" id="lb-home"></div>
+  <div class="htop"><div class="httl" id="h-ttl"></div><div class="hsub" id="h-sub"></div></div>
+  <div class="hgrid">
+    <div class="sc" onclick="go('guest')">
+      <div class="ci cig">★</div>
+      <div class="ct" id="hg-t"></div><div class="cd" id="hg-d"></div><div class="ck" id="hg-k"></div>
+    </div>
+    <div class="sc" onclick="go('staff')">
+      <div class="ci cis">◎</div>
+      <div class="ct" id="hs-t"></div><div class="cd" id="hs-d"></div><div class="ck" id="hs-k"></div>
+    </div>
+  </div>
+  <div class="qrsec">
+    <div class="qrttl" id="qr-ttl"></div>
+    <div class="qrgrid">
+      <div class="qrc"><div class="qrl" id="qrl-g"></div><div class="qrbox" id="qb-g"></div><div class="qrurl" id="qu-g"></div></div>
+      <div class="qrc"><div class="qrl" id="qrl-s"></div><div class="qrbox" id="qb-s"></div><div class="qrurl" id="qu-s"></div></div>
+    </div>
+  </div>
+  <div class="anote" id="anote"></div>
+</div>
+
+<div id="guest" class="pg">
+  <div class="lang-bar" id="lb-guest"></div>
+  <div class="hdr"><div class="tag tg" id="g-tag"></div><h1 id="g-h1"></h1><div class="sub" id="g-sub"></div></div>
+  <div class="pbw"><div class="pb"><div class="pf g" id="gp" style="width:0%"></div></div></div>
+  <div id="gq1" class="qb"><div class="ql" id="gq1l"></div><div class="qt" id="gq1t"></div><div class="stars" id="st-ov"></div></div>
+  <div id="gq2" class="qb" style="display:none"><div class="ql" id="gq2l"></div><div class="qt" id="gq2t"></div><div class="stars" id="st-fd"></div></div>
+  <div id="gq3" class="qb" style="display:none"><div class="ql" id="gq3l"></div><div class="qt" id="gq3t"></div><div class="rg" id="rg-sv"></div></div>
+  <div id="gq4" class="qb" style="display:none"><div class="ql" id="gq4l"></div><div class="qt" id="gq4t"></div><textarea id="g-txt"></textarea></div>
+  <div class="ftr">
+    <button class="btn" onclick="goHome()" id="g-bk"></button>
+    <div style="display:flex;align-items:center;gap:9px"><span class="slbl" id="g-sl"></span><button class="btn pri" id="g-nx" onclick="gNext()"></button></div>
+  </div>
+</div>
+
+<div id="staff" class="pg">
+  <div class="lang-bar" id="lb-staff"></div>
+  <div class="hdr"><div class="tag ts" id="s-tag"></div><h1 id="s-h1"></h1><div class="sub" id="s-sub"></div></div>
+  <div class="pbw"><div class="pb"><div class="pf s" id="sp" style="width:0%"></div></div></div>
+  <div id="sq1" class="qb"><div class="ql" id="sq1l"></div><div class="qt" id="sq1t"></div><div class="stars" id="st-wk"></div></div>
+  <div id="sq2" class="qb" style="display:none"><div class="ql" id="sq2l"></div><div class="qt" id="sq2t"></div><div class="rg" id="rg-cm"></div></div>
+  <div id="sq3" class="qb" style="display:none"><div class="ql" id="sq3l"></div><div class="qt" id="sq3t"></div><div class="rg" id="rg-df"></div></div>
+  <div id="sq4" class="qb" style="display:none"><div class="ql" id="sq4l"></div><div class="qt" id="sq4t"></div><div class="rg" id="rg-mg"></div></div>
+  <div id="sq5" class="qb" style="display:none"><div class="ql" id="sq5l"></div><div class="qt" id="sq5t"></div><textarea id="s-txt"></textarea></div>
+  <div class="ftr">
+    <button class="btn" onclick="goHome()" id="s-bk"></button>
+    <div style="display:flex;align-items:center;gap:9px"><span class="slbl" id="s-sl"></span><button class="btn pri" id="s-nx" onclick="sNext()"></button></div>
+  </div>
+</div>
+
+<div id="done" class="pg">
+  <div class="lang-bar" id="lb-done"></div>
+  <div class="dwrap">
+    <div class="dic">✓</div>
+    <div class="dttl" id="d-ttl"></div>
+    <div class="dsub" id="d-sub"></div>
+    <button class="btn pri" id="d-btn" onclick="goHome()"></button>
+  </div>
+</div>
+
+</div>
+<script>
+const TX={
+  ko:{n:'한국어',hT:'Matina Lounge 설문',hS:'진행할 설문을 선택하세요',gT:'고객 만족도 조사',gD:'방문 경험·서비스·음식 품질을 평가해 주세요',gK:'⏱ 약 2분 · 4문항',sT:'직원 내부 설문',sD:'업무 환경·팀 소통·개선 의견을 남겨 주세요',sK:'⏱ 약 3분 · 5문항',qT:'QR코드로 바로 접속',qG:'고객 설문 QR',qS:'직원 설문 QR',aN:'※ QR코드를 인쇄하거나 태블릿·키오스크 화면에 띄워 사용할 수 있습니다.',gtag:'고객 만족도 조사',gH:'방문해 주셔서 감사합니다',gSb:'소중한 의견이 서비스 개선에 큰 도움이 됩니다',gQ:['전반적인 라운지 이용 만족도는 어떠셨나요?','음식·음료 품질은 어떠셨나요?','직원 서비스는 어떠셨나요?','개선됐으면 하는 점이 있으신가요? (선택)'],gSv:['매우 만족','만족','보통','아쉬움'],gPh:'자유롭게 작성해 주세요',stag:'직원 내부 설문',sH:'솔직한 의견을 들려주세요',sSb:'모든 응답은 익명으로 처리됩니다',sQ:['현재 근무 환경에 전반적으로 만족하시나요?','팀 내 소통은 원활하게 이루어지고 있나요?','업무 중 가장 어려운 부분은 무엇인가요?','관리자(매니저)의 지원은 충분하다고 느끼시나요?','건의 사항이나 개선 의견을 적어 주세요 (선택)'],sCm:['매우 그렇다','그렇다','보통','그렇지 않다'],sDf:['업무량·인력','고객 응대','규정·매뉴얼','시설·환경'],sMg:['매우 그렇다','그렇다','보통','그렇지 않다'],sPh:'익명으로 제출됩니다',bk:'처음으로',nx:'다음',sb:'제출',dT:'제출 완료',dS:'소중한 의견 감사합니다.\n더 나은 서비스를 위해 반영하겠습니다.',dB:'처음으로 돌아가기'},
+  en:{n:'English',hT:'Matina Lounge Survey',hS:'Please select a survey to proceed',gT:'Guest Satisfaction Survey',gD:'Rate your visit, service and food quality',gK:'⏱ ~2 min · 4 questions',sT:'Staff Internal Survey',sD:'Share your thoughts on the work environment',sK:'⏱ ~3 min · 5 questions',qT:'Scan QR Code to Start',qG:'Guest Survey QR',qS:'Staff Survey QR',aN:'※ Print or display the QR codes on a tablet or kiosk.',gtag:'Guest Satisfaction',gH:'Thank you for visiting',gSb:'Your feedback helps us improve our service',gQ:['How satisfied were you with your overall lounge experience?','How would you rate the food and beverage quality?','How was the staff service?','Is there anything you would like us to improve? (optional)'],gSv:['Very Satisfied','Satisfied','Neutral','Disappointed'],gPh:'Please share your thoughts',stag:'Staff Survey',sH:'Your honest feedback matters',sSb:'All responses are anonymous',sQ:['How satisfied are you with your current work environment?','Is communication within the team working smoothly?','What is the most challenging part of your work?','Do you feel you receive enough support from management?','Please share any suggestions (optional)'],sCm:['Strongly Agree','Agree','Neutral','Disagree'],sDf:['Workload / Staffing','Guest Interactions','Policies / Manuals','Facilities'],sMg:['Strongly Agree','Agree','Neutral','Disagree'],sPh:'Anonymous submission',bk:'Home',nx:'Next',sb:'Submit',dT:'Submitted!',dS:'Thank you for your valuable feedback.\nWe will use it to improve our service.',dB:'Back to Home'},
+  zh:{n:'中文',hT:'Matina 贵宾室问卷',hS:'请选择您要填写的问卷',gT:'宾客满意度调查',gD:'请对到访体验、服务及餐饮质量进行评价',gK:'⏱ 约2分钟 · 4道题',sT:'员工内部问卷',sD:'请分享对工作环境及团队沟通的意见',sK:'⏱ 约3分钟 · 5道题',qT:'扫描二维码参与',qG:'宾客问卷二维码',qS:'员工问卷二维码',aN:'※ 可打印二维码或在平板电脑/自助终端上显示。',gtag:'宾客满意度调查',gH:'感谢您的到访',gSb:'您的反馈将帮助我们持续改善服务',gQ:['您对贵宾室整体体验的满意程度如何？','您对餐饮品质的评价如何？','您对工作人员服务的评价如何？','您希望我们改进的地方有哪些？（选填）'],gSv:['非常满意','满意','一般','有待改善'],gPh:'请自由填写您的意见',stag:'员工内部问卷',sH:'欢迎提供真实反馈',sSb:'所有回答将匿名处理',sQ:['您对目前的工作环境总体满意吗？','团队内部的沟通是否顺畅？','工作中最具挑战性的部分是什么？','您是否感到管理层给予了足够的支持？','请自由填写建议或意见（选填）'],sCm:['非常同意','同意','一般','不同意'],sDf:['工作量/人手','宾客接待','规定/手册','设施/环境'],sMg:['非常同意','同意','一般','不同意'],sPh:'将匿名提交',bk:'返回首页',nx:'下一题',sb:'提交',dT:'提交成功',dS:'感谢您宝贵的反馈。\n我们将认真参考您的意见，持续改进服务。',dB:'返回首页'},
+  ja:{n:'日本語',hT:'Matinaラウンジ アンケート',hS:'ご回答いただくアンケートをお選びください',gT:'お客様満足度調査',gD:'ご利用体験・サービス・お食事の品質をご評価ください',gK:'⏱ 約2分 · 4問',sT:'スタッフ内部アンケート',sD:'職場環境やチームのコミュニケーションについてお聞かせください',sK:'⏱ 約3分 · 5問',qT:'QRコードでアクセス',qG:'お客様アンケートQR',qS:'スタッフアンケートQR',aN:'※ QRコードを印刷するか、タブレット・キオスクに表示してご利用ください。',gtag:'お客様満足度調査',gH:'ご来場ありがとうございます',gSb:'貴重なご意見をサービス改善に活かしてまいります',gQ:['ラウンジ全体のご満足度はいかがでしたか？','お食事・お飲み物の品質はいかがでしたか？','スタッフのサービスはいかがでしたか？','改善してほしい点があればお聞かせください（任意）'],gSv:['大変満足','満足','普通','不満'],gPh:'ご自由にお書きください',stag:'スタッフ内部アンケート',sH:'率直なご意見をお聞かせください',sSb:'回答はすべて匿名で処理されます',sQ:['現在の職場環境に全体的に満足していますか？','チーム内のコミュニケーションはスムーズですか？','業務で最も難しいと感じる点は何ですか？','マネージャーからのサポートは十分だと感じますか？','ご提案や改善点を自由にお書きください（任意）'],sCm:['とてもそう思う','そう思う','普通','そう思わない'],sDf:['業務量・人員','お客様対応','規定・マニュアル','設備・環境'],sMg:['とてもそう思う','そう思う','普通','そう思わない'],sPh:'匿名で送信されます',bk:'ホームへ',nx:'次へ',sb:'送信',dT:'送信完了',dS:'貴重なご意見ありがとうございます。\nサービス向上のために活用させていただきます。',dB:'ホームへ戻る'}
+};
+const LANGS=['ko','en','zh','ja'];
+let lang='ko',gSt=1,sSt=1;
+function t(){return TX[lang]}
+function $(i){return document.getElementById(i)}
+function setLang(l){lang=l;renderPage(document.querySelector('.pg.active').id)}
+function langBar(cid){$(cid).innerHTML=LANGS.map(l=>`<button class="lb${l===lang?' on':''}" onclick="setLang('${l}')">${TX[l].n}</button>`).join('')}
+function show(id){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));$(id).classList.add('active');renderPage(id)}
+function goHome(){gSt=1;sSt=1;show('home')}
+function go(type){if(type==='guest'){gSt=1;show('guest')}else{sSt=1;show('staff')}}
+function renderPage(id){
+  const x=t();
+  ['home','guest','staff','done'].forEach(p=>langBar('lb-'+p));
+  if(id==='home'){
+    $('h-ttl').textContent=x.hT;$('h-sub').textContent=x.hS;
+    $('hg-t').textContent=x.gT;$('hg-d').textContent=x.gD;$('hg-k').textContent=x.gK;
+    $('hs-t').textContent=x.sT;$('hs-d').textContent=x.sD;$('hs-k').textContent=x.sK;
+    $('qr-ttl').textContent=x.qT;$('qrl-g').textContent=x.qG;$('qrl-s').textContent=x.qS;
+    $('anote').textContent=x.aN;
+  }
+  if(id==='guest'){
+    $('g-tag').textContent=x.gtag;$('g-h1').textContent=x.gH;$('g-sub').textContent=x.gSb;
+    for(let i=1;i<=4;i++){$('gq'+i+'l').textContent='Q'+i+' / 4';$('gq'+i+'t').textContent=x.gQ[i-1];$('gq'+i).style.display=i===gSt?'':'none'}
+    $('g-txt').placeholder=x.gPh;buildR('rg-sv',x.gSv,'sv');
+    $('gp').style.width=((gSt-1)/4*100)+'%';$('g-sl').textContent=gSt+' / 4';
+    $('g-bk').textContent=x.bk;$('g-nx').textContent=gSt===4?x.sb:x.nx;
+    mkStars('st-ov');mkStars('st-fd');
+  }
+  if(id==='staff'){
+    $('s-tag').textContent=x.stag;$('s-h1').textContent=x.sH;$('s-sub').textContent=x.sSb;
+    for(let i=1;i<=5;i++){$('sq'+i+'l').textContent='Q'+i+' / 5';$('sq'+i+'t').textContent=x.sQ[i-1];$('sq'+i).style.display=i===sSt?'':'none'}
+    $('s-txt').placeholder=x.sPh;buildR('rg-cm',x.sCm,'cm');buildR('rg-df',x.sDf,'df');buildR('rg-mg',x.sMg,'mg');
+    $('sp').style.width=((sSt-1)/5*100)+'%';$('s-sl').textContent=sSt+' / 5';
+    $('s-bk').textContent=x.bk;$('s-nx').textContent=sSt===5?x.sb:x.nx;
+    mkStars('st-wk');
+  }
+  if(id==='done'){$('d-ttl').textContent=x.dT;$('d-sub').innerHTML=x.dS.replace('\n','<br>');$('d-btn').textContent=x.dB}
+}
+function buildR(cid,opts,grp){
+  const c=$(cid);if(!c)return;
+  const sv=(c.querySelector('.ro.sel')||{dataset:{}}).dataset.v||'';
+  c.innerHTML=opts.map(o=>`<div class="ro${o===sv?' sel':''}" data-g="${grp}" data-v="${o}" onclick="selR(this)"><div class="rd"></div>${o}</div>`).join('');
+}
+function selR(el){document.querySelectorAll(`.ro[data-g="${el.dataset.g}"]`).forEach(o=>o.classList.remove('sel'));el.classList.add('sel')}
+function mkStars(cid){
+  const c=$(cid);if(!c||c._built)return;c._built=true;
+  c.innerHTML=[1,2,3,4,5].map(v=>`<span class="star" data-v="${v}">★</span>`).join('');
+  c.querySelectorAll('.star').forEach(s=>{
+    s.onclick=()=>{const v=+s.dataset.v;c.querySelectorAll('.star').forEach((st,i)=>st.classList.toggle('on',i<v))};
+    s.onmouseover=()=>{const v=+s.dataset.v;c.querySelectorAll('.star').forEach((st,i)=>st.classList.toggle('on',i<v))};
+    s.onmouseout=()=>{const f=c.querySelectorAll('.on').length;c.querySelectorAll('.star').forEach((st,i)=>st.classList.toggle('on',i<f))};
+  });
+}
+function gNext(){if(gSt<4){gSt++;renderPage('guest')}else show('done')}
+function sNext(){if(sSt<5){sSt++;renderPage('staff')}else show('done')}
+
+/* QR 생성 — 실제 배포 URL로 교체 */
+const BASE = 'https://matina.walkerhill.com/survey';
+const GU = BASE+'?type=guest';
+const SU = BASE+'?type=staff';
+function makeQR(boxId,url,urlEl){
+  const box=$(boxId);if(!box||box._done)return;box._done=true;box.innerHTML='';
+  if(urlEl)$(urlEl).textContent=url;
+  try{new QRCode(box,{text:url,width:100,height:100,colorDark:'#1a1a1a',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M})}catch(e){box.textContent='QR'}
+}
+renderPage('home');
+window.addEventListener('load',()=>{
+  makeQR('qb-g',GU,'qu-g');
+  makeQR('qb-s',SU,'qu-s');
+  const p=new URLSearchParams(location.search).get('type');
+  if(p==='guest'||p==='staff') go(p);
+});
+</script>
+</body>
+</html>
