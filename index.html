@@ -69,21 +69,16 @@ textarea:focus{outline:none;border-color:#1D9E75}
 <div id="home" class="pg active">
   <div class="lang-bar" id="lb-home"></div>
   <div class="htop"><div class="httl" id="h-ttl"></div><div class="hsub" id="h-sub"></div></div>
-  <div class="hgrid">
+  <div style="padding:1.1rem 1.4rem">
     <div class="sc" onclick="go('guest')">
       <div class="ci cig">★</div>
       <div class="ct" id="hg-t"></div><div class="cd" id="hg-d"></div><div class="ck" id="hg-k"></div>
     </div>
-    <div class="sc" onclick="go('staff')">
-      <div class="ci cis">◎</div>
-      <div class="ct" id="hs-t"></div><div class="cd" id="hs-d"></div><div class="ck" id="hs-k"></div>
-    </div>
   </div>
   <div class="qrsec">
     <div class="qrttl" id="qr-ttl"></div>
-    <div class="qrgrid">
+    <div style="max-width:160px;margin:0 auto">
       <div class="qrc"><div class="qrl" id="qrl-g"></div><div class="qrbox" id="qb-g"></div><div class="qrurl" id="qu-g"></div></div>
-      <div class="qrc"><div class="qrl" id="qrl-s"></div><div class="qrbox" id="qb-s"></div><div class="qrurl" id="qu-s"></div></div>
     </div>
   </div>
   <div class="anote" id="anote"></div>
@@ -103,20 +98,6 @@ textarea:focus{outline:none;border-color:#1D9E75}
   </div>
 </div>
 
-<div id="staff" class="pg">
-  <div class="lang-bar" id="lb-staff"></div>
-  <div class="hdr"><div class="tag ts" id="s-tag"></div><h1 id="s-h1"></h1><div class="sub" id="s-sub"></div></div>
-  <div class="pbw"><div class="pb"><div class="pf s" id="sp" style="width:0%"></div></div></div>
-  <div id="sq1" class="qb"><div class="ql" id="sq1l"></div><div class="qt" id="sq1t"></div><div class="stars" id="st-wk"></div></div>
-  <div id="sq2" class="qb" style="display:none"><div class="ql" id="sq2l"></div><div class="qt" id="sq2t"></div><div class="rg" id="rg-cm"></div></div>
-  <div id="sq3" class="qb" style="display:none"><div class="ql" id="sq3l"></div><div class="qt" id="sq3t"></div><div class="rg" id="rg-df"></div></div>
-  <div id="sq4" class="qb" style="display:none"><div class="ql" id="sq4l"></div><div class="qt" id="sq4t"></div><div class="rg" id="rg-mg"></div></div>
-  <div id="sq5" class="qb" style="display:none"><div class="ql" id="sq5l"></div><div class="qt" id="sq5t"></div><textarea id="s-txt"></textarea></div>
-  <div class="ftr">
-    <button class="btn" onclick="goHome()" id="s-bk"></button>
-    <div style="display:flex;align-items:center;gap:9px"><span class="slbl" id="s-sl"></span><button class="btn pri" id="s-nx" onclick="sNext()"></button></div>
-  </div>
-</div>
 
 <div id="done" class="pg">
   <div class="lang-bar" id="lb-done"></div>
@@ -137,22 +118,21 @@ const TX={
   ja:{n:'日本語',hT:'Matinaラウンジ アンケート',hS:'ご回答いただくアンケートをお選びください',gT:'お客様満足度調査',gD:'ご利用体験・サービス・お食事の品質をご評価ください',gK:'⏱ 約2分 · 4問',sT:'スタッフ内部アンケート',sD:'職場環境やチームのコミュニケーションについてお聞かせください',sK:'⏱ 約3分 · 5問',qT:'QRコードでアクセス',qG:'お客様アンケートQR',qS:'スタッフアンケートQR',aN:'※ QRコードを印刷するか、タブレット・キオスクに表示してご利用ください。',gtag:'お客様満足度調査',gH:'ご来場ありがとうございます',gSb:'貴重なご意見をサービス改善に活かしてまいります',gQ:['ラウンジ全体のご満足度はいかがでしたか？','お食事・お飲み物の品質はいかがでしたか？','スタッフのサービスはいかがでしたか？','改善してほしい点があればお聞かせください（任意）'],gSv:['大変満足','満足','普通','不満'],gPh:'ご自由にお書きください',stag:'スタッフ内部アンケート',sH:'率直なご意見をお聞かせください',sSb:'回答はすべて匿名で処理されます',sQ:['現在の職場環境に全体的に満足していますか？','チーム内のコミュニケーションはスムーズですか？','業務で最も難しいと感じる点は何ですか？','マネージャーからのサポートは十分だと感じますか？','ご提案や改善点を自由にお書きください（任意）'],sCm:['とてもそう思う','そう思う','普通','そう思わない'],sDf:['業務量・人員','お客様対応','規定・マニュアル','設備・環境'],sMg:['とてもそう思う','そう思う','普通','そう思わない'],sPh:'匿名で送信されます',bk:'ホームへ',nx:'次へ',sb:'送信',dT:'送信完了',dS:'貴重なご意見ありがとうございます。\nサービス向上のために活用させていただきます。',dB:'ホームへ戻る'}
 };
 const LANGS=['ko','en','zh','ja'];
-let lang='ko',gSt=1,sSt=1;
+let lang='ko',gSt=1;
 function t(){return TX[lang]}
 function $(i){return document.getElementById(i)}
 function setLang(l){lang=l;renderPage(document.querySelector('.pg.active').id)}
 function langBar(cid){$(cid).innerHTML=LANGS.map(l=>`<button class="lb${l===lang?' on':''}" onclick="setLang('${l}')">${TX[l].n}</button>`).join('')}
 function show(id){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));$(id).classList.add('active');renderPage(id)}
-function goHome(){gSt=1;sSt=1;show('home')}
-function go(type){if(type==='guest'){gSt=1;show('guest')}else{sSt=1;show('staff')}}
+function goHome(){gSt=1;show('home')}
+function go(){gSt=1;show('guest')}
 function renderPage(id){
   const x=t();
-  ['home','guest','staff','done'].forEach(p=>langBar('lb-'+p));
+  ['home','guest','done'].forEach(p=>langBar('lb-'+p));
   if(id==='home'){
     $('h-ttl').textContent=x.hT;$('h-sub').textContent=x.hS;
     $('hg-t').textContent=x.gT;$('hg-d').textContent=x.gD;$('hg-k').textContent=x.gK;
-    $('hs-t').textContent=x.sT;$('hs-d').textContent=x.sD;$('hs-k').textContent=x.sK;
-    $('qr-ttl').textContent=x.qT;$('qrl-g').textContent=x.qG;$('qrl-s').textContent=x.qS;
+    $('qr-ttl').textContent=x.qT;$('qrl-g').textContent=x.qG;
     $('anote').textContent=x.aN;
   }
   if(id==='guest'){
@@ -162,14 +142,6 @@ function renderPage(id){
     $('gp').style.width=((gSt-1)/4*100)+'%';$('g-sl').textContent=gSt+' / 4';
     $('g-bk').textContent=x.bk;$('g-nx').textContent=gSt===4?x.sb:x.nx;
     mkStars('st-ov');mkStars('st-fd');
-  }
-  if(id==='staff'){
-    $('s-tag').textContent=x.stag;$('s-h1').textContent=x.sH;$('s-sub').textContent=x.sSb;
-    for(let i=1;i<=5;i++){$('sq'+i+'l').textContent='Q'+i+' / 5';$('sq'+i+'t').textContent=x.sQ[i-1];$('sq'+i).style.display=i===sSt?'':'none'}
-    $('s-txt').placeholder=x.sPh;buildR('rg-cm',x.sCm,'cm');buildR('rg-df',x.sDf,'df');buildR('rg-mg',x.sMg,'mg');
-    $('sp').style.width=((sSt-1)/5*100)+'%';$('s-sl').textContent=sSt+' / 5';
-    $('s-bk').textContent=x.bk;$('s-nx').textContent=sSt===5?x.sb:x.nx;
-    mkStars('st-wk');
   }
   if(id==='done'){$('d-ttl').textContent=x.dT;$('d-sub').innerHTML=x.dS.replace('\n','<br>');$('d-btn').textContent=x.dB}
 }
@@ -189,12 +161,9 @@ function mkStars(cid){
   });
 }
 function gNext(){if(gSt<4){gSt++;renderPage('guest')}else show('done')}
-function sNext(){if(sSt<5){sSt++;renderPage('staff')}else show('done')}
 
-/* QR 생성 — 실제 배포 URL로 교체 */
 const BASE = 'https://matinawest.github.io/matinasurvey/';
 const GU = BASE+'?type=guest';
-const SU = BASE+'?type=staff';
 function makeQR(boxId,url,urlEl){
   const box=$(boxId);if(!box||box._done)return;box._done=true;box.innerHTML='';
   if(urlEl)$(urlEl).textContent=url;
@@ -203,9 +172,8 @@ function makeQR(boxId,url,urlEl){
 renderPage('home');
 window.addEventListener('load',()=>{
   makeQR('qb-g',GU,'qu-g');
-  makeQR('qb-s',SU,'qu-s');
   const p=new URLSearchParams(location.search).get('type');
-  if(p==='guest'||p==='staff') go(p);
+  if(p==='guest') go();
 });
 </script>
 </body>
