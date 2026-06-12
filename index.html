@@ -160,7 +160,34 @@ function mkStars(cid){
     s.onmouseout=()=>{const f=c.querySelectorAll('.on').length;c.querySelectorAll('.star').forEach((st,i)=>st.classList.toggle('on',i<f))};
   });
 }
-function gNext(){if(gSt<4){gSt++;renderPage('guest')}else show('done')}
+async function gNext(){
+  if(gSt<4){gSt++;renderPage('guest');return;}
+  const btn=$('g-nx');
+  btn.disabled=true;btn.textContent='···';
+  const ov=$('st-ov').querySelectorAll('.on').length;
+  const fd=$('st-fd').querySelectorAll('.on').length;
+  const svc=($('rg-sv').querySelector('.ro.sel')||{dataset:{v:''}}).dataset.v;
+  const comment=$('g-txt').value;
+  const langMap={ko:'한국어',en:'English',zh:'中文',ja:'日本語'};
+  try{
+    await fetch('https://splitforms.com/api/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        access_key:'92a07ab15419498f8e73ad6b8ad9cb62',
+        subject:'[Matina Lounge] 고객 설문 응답',
+        language:langMap[lang]||lang,
+        overall_satisfaction:ov?'★'.repeat(ov)+'☆'.repeat(5-ov):'미응답',
+        food_beverage:fd?'★'.repeat(fd)+'☆'.repeat(5-fd):'미응답',
+        staff_service:svc||'미응답',
+        comment:comment||'(없음)',
+        submitted_at:new Date().toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})
+      })
+    });
+  }catch(e){}
+  btn.disabled=false;
+  show('done');
+}
 
 const BASE = 'https://matinawest.github.io/matinasurvey/';
 const GU = BASE+'?type=guest';
