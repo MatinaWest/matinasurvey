@@ -4,75 +4,395 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Matina Lounge Survey</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400&family=Noto+Sans+KR:wght@400;500&family=Cormorant+Garamond:wght@500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
+/* ── Walker Hill Design Tokens ── */
+:root{
+  --canvas:#faf9f5;
+  --surface-soft:#f5f0e8;
+  --surface-card:#efe9de;
+  --surface-cream-strong:#e8e0d2;
+  --surface-dark:#181715;
+  --surface-dark-elevated:#252320;
+  --primary:#cc785c;
+  --primary-active:#a9583e;
+  --primary-disabled:#e6dfd8;
+  --hairline:#e6dfd8;
+  --hairline-soft:#ebe6df;
+  --ink:#141413;
+  --body-strong:#252523;
+  --body:#3d3d3a;
+  --muted:#6c6a64;
+  --muted-soft:#8e8b82;
+  --on-primary:#ffffff;
+  --on-dark:#faf9f5;
+  --on-dark-soft:#a09d96;
+  --r-md:8px;
+  --r-lg:12px;
+  --r-pill:9999px;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR','Noto Sans SC','Noto Sans JP',sans-serif;background:#f5f5f4;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
-.card{background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,.08);width:100%;max-width:520px;overflow:hidden}
+body{
+  font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--surface-soft);
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:1rem;
+}
+.card{
+  background:var(--canvas);
+  border-radius:16px;
+  box-shadow:0 4px 24px rgba(20,14,8,.10),0 1px 4px rgba(20,14,8,.06);
+  width:100%;max-width:480px;
+  overflow:hidden;
+  border:1px solid var(--hairline);
+}
 .pg{display:none}.pg.active{display:block}
-.lang-bar{display:flex;gap:6px;padding:.9rem 1.4rem .7rem;flex-wrap:wrap;border-bottom:1px solid #e5e4e2}
-.lb{padding:4px 13px;border-radius:20px;border:1px solid #d3d1c7;background:#fff;font-size:12px;font-weight:500;cursor:pointer;color:#5f5e5a;transition:all .15s}
-.lb:hover{background:#f1efe8}.lb.on{background:#1D9E75;border-color:#1D9E75;color:#fff}
-.hdr{padding:1.1rem 1.4rem .7rem;border-bottom:1px solid #e5e4e2;margin-bottom:1.1rem}
-.tag{display:inline-block;font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;margin-bottom:.55rem}
-.tg{background:#E1F5EE;color:#0F6E56}.ts{background:#EEEDFE;color:#3C3489}
-h1{font-size:18px;font-weight:500;color:#1a1a1a;margin-bottom:3px}
-.sub{font-size:12px;color:#888780}
-.pbw{padding:0 1.4rem .9rem}.pb{height:3px;background:#e5e4e2;border-radius:2px}
-.pf{height:3px;border-radius:2px;transition:width .3s}.pf.g{background:#1D9E75}.pf.s{background:#7F77DD}
-.qb{padding:0 1.4rem 1.1rem}
-.ql{font-size:11px;color:#888780;margin-bottom:.3rem}
-.qt{font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:.8rem}
-.stars{display:flex;gap:7px}
-.star{font-size:30px;cursor:pointer;color:#d3d1c7;transition:color .1s;user-select:none}
-.star.on{color:#EF9F27}
-.rg{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.ro{border:1px solid #d3d1c7;border-radius:8px;padding:9px 12px;cursor:pointer;font-size:13px;color:#1a1a1a;transition:all .15s;display:flex;align-items:center;gap:7px}
-.ro:hover{border-color:#888780;background:#f9f9f8}.ro.sel{border-color:#1D9E75;background:#E1F5EE;color:#085041}
-.rd{width:12px;height:12px;border-radius:50%;border:1.5px solid currentColor;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.rd::after{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;display:none}
+
+/* ── 언어 선택 (Cream surface) ── */
+.ls-wrap{
+  background:var(--canvas);
+  padding:2.5rem 1.5rem 2.8rem;
+  text-align:center;
+}
+.ls-top-brand{
+  font-family:'Cormorant Garamond','Noto Serif KR',serif;
+  font-size:22px;font-weight:500;
+  letter-spacing:.18em;
+  color:var(--ink);
+  text-transform:uppercase;
+  margin-bottom:1.2rem;
+}
+.ls-rule{
+  width:40px;height:2px;
+  background:var(--primary);
+  border-radius:2px;
+  margin:0 auto 1.4rem;
+}
+.ls-sub{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:1.8rem;
+  line-height:1.7;
+}
+.ls-logo-wrap{
+  margin-top:2rem;
+  padding-top:1.4rem;
+  border-top:1px solid var(--hairline);
+}
+.ls-logo-img{
+  width:200px;
+  opacity:.7;
+  filter:none;
+}
+.ls-logo-fallback{
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;font-weight:500;
+  letter-spacing:.18em;
+  color:var(--muted);
+  text-transform:uppercase;
+  line-height:1.8;
+}
+.ls-logo-fallback span{
+  font-size:12px;letter-spacing:.16em;
+}
+.ls-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  max-width:300px;
+  margin:0 auto;
+}
+.ls-btn{
+  background:var(--surface-soft);
+  border:1px solid var(--hairline);
+  border-radius:var(--r-lg);
+  padding:16px 10px;
+  cursor:pointer;
+  font-family:inherit;
+  transition:all .18s;
+}
+.ls-btn:hover{
+  border-color:var(--primary);
+  background:var(--surface-card);
+}
+.ls-name{
+  font-size:15px;font-weight:500;
+  color:var(--body-strong);
+  display:block;margin-bottom:3px;
+}
+.ls-sub2{
+  font-size:11px;
+  color:var(--muted-soft);
+  display:block;
+}
+
+/* ── 언어 전환 바 (cream) ── */
+.lang-bar{
+  display:flex;gap:5px;
+  padding:.75rem 1.25rem .6rem;
+  flex-wrap:wrap;
+  border-bottom:1px solid var(--hairline);
+  background:var(--canvas);
+}
+.lb{
+  padding:3px 12px;
+  border-radius:var(--r-pill);
+  border:1px solid var(--hairline);
+  background:var(--canvas);
+  font-size:11px;font-weight:500;
+  cursor:pointer;
+  color:var(--muted);
+  font-family:inherit;
+  transition:all .15s;
+  letter-spacing:.02em;
+}
+.lb:hover{background:var(--surface-card);border-color:var(--hairline-soft)}
+.lb.on{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+
+/* ── 설문 헤더 ── */
+.hdr{
+  padding:1.25rem 1.25rem .9rem;
+  border-bottom:1px solid var(--hairline);
+  background:var(--canvas);
+}
+.coral-rule-sm{
+  width:32px;height:2px;
+  background:var(--primary);
+  border-radius:2px;
+  margin-bottom:.7rem;
+}
+.tag{
+  display:inline-block;
+  font-size:10px;font-weight:500;
+  padding:3px 10px;
+  border-radius:var(--r-pill);
+  margin-bottom:.55rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.tg{background:var(--surface-card);color:var(--primary)}
+h1{
+  font-family:'Cormorant Garamond','Noto Serif KR',serif;
+  font-size:20px;font-weight:500;
+  color:var(--ink);
+  margin-bottom:4px;
+  letter-spacing:-.3px;
+  line-height:1.2;
+}
+.sub{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* ── 진행 바 ── */
+.pbw{padding:0 1.25rem .85rem;background:var(--canvas)}
+.pb{height:2px;background:var(--hairline);border-radius:2px}
+.pf{height:2px;border-radius:2px;transition:width .3s;background:var(--primary)}
+
+/* ── 질문 블록 ── */
+.qb{padding:0 1.25rem 1.1rem;background:var(--canvas)}
+.ql{
+  font-size:10px;font-weight:500;
+  color:var(--muted-soft);
+  margin-bottom:.3rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.qt{
+  font-size:14px;font-weight:500;
+  color:var(--body-strong);
+  margin-bottom:.9rem;
+  line-height:1.5;
+}
+
+/* ── 별점 ── */
+.stars{display:flex;gap:6px}
+.star{
+  font-size:32px;cursor:pointer;
+  color:var(--hairline);
+  transition:color .1s;
+  user-select:none;
+}
+.star.on{color:var(--primary)}
+
+/* ── 객관식 ── */
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ro{
+  border:1px solid var(--hairline);
+  border-radius:var(--r-lg);
+  padding:10px 12px;
+  cursor:pointer;
+  font-size:13px;
+  color:var(--body);
+  font-family:inherit;
+  transition:all .15s;
+  display:flex;align-items:center;gap:8px;
+  background:var(--canvas);
+}
+.ro:hover{border-color:var(--primary-disabled);background:var(--surface-soft)}
+.ro.sel{
+  border-color:var(--primary);
+  background:var(--surface-card);
+  color:var(--primary-active);
+}
+.rd{
+  width:12px;height:12px;border-radius:50%;
+  border:1.5px solid currentColor;
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.rd::after{
+  content:'';width:5px;height:5px;
+  border-radius:50%;background:currentColor;display:none;
+}
 .ro.sel .rd::after{display:block}
-textarea{width:100%;border:1px solid #d3d1c7;border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;color:#1a1a1a;background:#fff;resize:vertical;min-height:70px}
-textarea:focus{outline:none;border-color:#1D9E75}
-.ftr{padding:.9rem 1.4rem;border-top:1px solid #e5e4e2;display:flex;justify-content:space-between;align-items:center}
-.btn{padding:8px 20px;border-radius:8px;font-size:13px;cursor:pointer;border:1px solid #d3d1c7;background:#fff;color:#1a1a1a;transition:background .15s;font-family:inherit}
-.btn:hover{background:#f1efe8}.btn.pri{background:#1D9E75;border-color:#1D9E75;color:#fff}.btn.pri:hover{background:#0F6E56}
-.slbl{font-size:11px;color:#888780}
-.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:1.1rem 1.4rem}
-.sc{border:1px solid #d3d1c7;border-radius:12px;padding:1rem;cursor:pointer;transition:all .2s;background:#fff}
-.sc:hover{border-color:#888780;box-shadow:0 1px 6px rgba(0,0,0,.06)}
-.ci{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:.55rem}
-.cig{background:#E1F5EE;color:#0F6E56}.cis{background:#EEEDFE;color:#3C3489}
-.ct{font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:3px}
-.cd{font-size:11px;color:#888780;line-height:1.5}
-.ck{font-size:10px;color:#888780;margin-top:9px;padding-top:7px;border-top:1px solid #e5e4e2}
-.htop{padding:1.1rem 1.4rem .4rem}
-.httl{font-size:16px;font-weight:500;color:#1a1a1a;margin-bottom:3px}
-.hsub{font-size:12px;color:#888780}
-.qrsec{border-top:1px solid #e5e4e2;padding:.9rem 1.4rem}
-.qrttl{font-size:12px;font-weight:500;color:#1a1a1a;margin-bottom:.65rem}
-.qrgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.qrc{border:1px solid #d3d1c7;border-radius:8px;padding:.65rem;text-align:center}
-.qrl{font-size:11px;color:#888780;margin-bottom:.4rem}
-.qrbox{width:100px;height:100px;margin:0 auto .4rem;border:1px solid #e5e4e2;border-radius:4px;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center}
-.qrurl{font-size:10px;color:#888780;word-break:break-all;line-height:1.4}
-.anote{padding:.65rem 1.4rem;background:#f9f9f8;border-radius:8px;margin:.4rem 1.4rem .9rem;font-size:11px;color:#888780;line-height:1.6}
-.dwrap{padding:2.5rem 1.4rem;text-align:center}
-.dic{width:48px;height:48px;border-radius:50%;background:#E1F5EE;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:24px;color:#1D9E75}
-.dttl{font-size:16px;font-weight:500;color:#1a1a1a;margin-bottom:5px}
-.dsub{font-size:13px;color:#888780;margin-bottom:1.4rem;line-height:1.6}
+
+/* ── 자유 서술 ── */
+textarea{
+  width:100%;
+  border:1px solid var(--hairline);
+  border-radius:var(--r-lg);
+  padding:10px 13px;
+  font-size:13px;
+  font-family:inherit;
+  color:var(--body);
+  background:var(--surface-soft);
+  resize:vertical;min-height:72px;
+  line-height:1.55;
+  transition:border-color .15s;
+}
+textarea:focus{outline:none;border-color:var(--primary);background:var(--canvas)}
+textarea::placeholder{color:var(--muted-soft)}
+
+/* ── 푸터 ── */
+.ftr{
+  padding:.85rem 1.25rem;
+  border-top:1px solid var(--hairline);
+  display:flex;justify-content:space-between;align-items:center;
+  background:var(--canvas);
+}
+.btn{
+  padding:8px 18px;
+  border-radius:var(--r-md);
+  font-size:13px;cursor:pointer;
+  border:1px solid var(--hairline);
+  background:var(--canvas);
+  color:var(--muted);
+  font-family:inherit;
+  transition:all .15s;
+}
+.btn:hover{background:var(--surface-card);color:var(--body)}
+.btn.pri{
+  background:var(--primary);
+  border-color:var(--primary);
+  color:var(--on-primary);
+  font-weight:500;
+}
+.btn.pri:hover{background:var(--primary-active);border-color:var(--primary-active)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.slbl{font-size:11px;color:var(--muted-soft);letter-spacing:.04em}
+
+/* ── QR / 홈 섹션 ── */
+.htop{padding:1.25rem 1.25rem .5rem;background:var(--canvas)}
+.httl{
+  font-family:'Cormorant Garamond','Noto Serif KR',serif;
+  font-size:17px;font-weight:500;
+  color:var(--ink);margin-bottom:3px;letter-spacing:-.2px;
+}
+.hsub{font-size:12px;color:var(--muted)}
+.qrsec{border-top:1px solid var(--hairline);padding:1rem 1.25rem;background:var(--surface-soft)}
+.qrttl{font-size:11px;font-weight:500;color:var(--muted);margin-bottom:.65rem;letter-spacing:.06em;text-transform:uppercase}
+.qrc{
+  border:1px solid var(--hairline);
+  border-radius:var(--r-lg);
+  padding:.75rem;text-align:center;
+  background:var(--canvas);
+}
+.qrl{font-size:11px;color:var(--muted-soft);margin-bottom:.4rem}
+.qrbox{
+  width:100px;height:100px;
+  margin:0 auto .4rem;
+  border:1px solid var(--hairline);
+  border-radius:6px;overflow:hidden;background:#fff;
+  display:flex;align-items:center;justify-content:center;
+}
+.qrurl{font-size:10px;color:var(--muted-soft);word-break:break-all;line-height:1.4}
+.anote{
+  padding:.65rem 1.25rem .9rem;
+  font-size:11px;color:var(--muted-soft);line-height:1.6;
+  background:var(--surface-soft);
+}
+
+/* ── 완료 화면 (coral callout) ── */
+.dwrap{
+  background:var(--primary);
+  padding:3rem 1.5rem;
+  text-align:center;
+}
+.dic{
+  width:52px;height:52px;border-radius:50%;
+  background:rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 1.1rem;
+  font-size:24px;color:var(--on-primary);
+  border:1.5px solid rgba(255,255,255,.3);
+}
+.dttl{
+  font-family:'Cormorant Garamond','Noto Serif KR',serif;
+  font-size:22px;font-weight:500;
+  color:var(--on-primary);
+  margin-bottom:6px;
+  letter-spacing:-.3px;
+}
+.dsub{
+  font-size:13px;color:rgba(255,255,255,.8);
+  margin-bottom:1.6rem;line-height:1.65;
+}
+.btn-done{
+  display:inline-block;
+  padding:9px 22px;
+  border-radius:var(--r-md);
+  font-size:13px;cursor:pointer;
+  border:1.5px solid rgba(255,255,255,.5);
+  background:transparent;
+  color:var(--on-primary);
+  font-family:inherit;font-weight:500;
+  transition:all .15s;
+}
+.btn-done:hover{background:rgba(255,255,255,.15)}
 </style>
 </head>
 <body>
 <div class="card">
 
-<div id="home" class="pg active">
+<!-- 언어 선택 (Dark surface) -->
+<div id="lang-select" class="pg active">
+  <div class="ls-wrap">
+    <div class="ls-top-brand">MATINA LOUNGE</div>
+    <div class="ls-rule"></div>
+    <div class="ls-sub">언어를 선택해 주세요<br>Please select your language<br>请选择语言 &nbsp;·&nbsp; 言語をお選びください</div>
+    <div class="ls-grid">
+      <button class="ls-btn" onclick="pickLang('ko')"><span class="ls-name">한국어</span><span class="ls-sub2">Korean</span></button>
+      <button class="ls-btn" onclick="pickLang('en')"><span class="ls-name">English</span><span class="ls-sub2">영어</span></button>
+      <button class="ls-btn" onclick="pickLang('zh')"><span class="ls-name">中文</span><span class="ls-sub2">Chinese</span></button>
+      <button class="ls-btn" onclick="pickLang('ja')"><span class="ls-name">日本語</span><span class="ls-sub2">Japanese</span></button>
+    </div>
+    <div class="ls-logo-wrap">
+      <img src="https://matinawest.github.io/matinasurvey/walkerhill_logo.png" alt="WALKERHILL Hotels &amp; Resorts" class="ls-logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div class="ls-logo-fallback" style="display:none">WALKERHILL<br><span>HOTELS &amp; RESORTS</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 홈 (QR 관리용) -->
+<div id="home" class="pg">
   <div class="lang-bar" id="lb-home"></div>
-  <div class="htop"><div class="httl" id="h-ttl"></div><div class="hsub" id="h-sub"></div></div>
-  <div style="padding:1.1rem 1.4rem">
-    <div class="sc" onclick="go('guest')">
-      <div class="ci cig">★</div>
-      <div class="ct" id="hg-t"></div><div class="cd" id="hg-d"></div><div class="ck" id="hg-k"></div>
+  <div class="htop"><div class="coral-rule-sm"></div><div class="httl" id="h-ttl"></div><div class="hsub" id="h-sub"></div></div>
+  <div style="padding:1rem 1.25rem">
+    <div style="border:1px solid var(--hairline);border-radius:var(--r-lg);padding:1rem;cursor:pointer;background:var(--surface-soft);transition:all .2s" onclick="go()" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--hairline)'">
+      <div style="width:30px;height:30px;border-radius:6px;background:var(--surface-card);display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--primary);margin-bottom:.5rem">★</div>
+      <div style="font-size:13px;font-weight:500;color:var(--body-strong);margin-bottom:3px" id="hg-t"></div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.5" id="hg-d"></div>
+      <div style="font-size:10px;color:var(--muted-soft);margin-top:9px;padding-top:7px;border-top:1px solid var(--hairline)" id="hg-k"></div>
     </div>
   </div>
   <div class="qrsec">
@@ -84,56 +404,65 @@ textarea:focus{outline:none;border-color:#1D9E75}
   <div class="anote" id="anote"></div>
 </div>
 
+<!-- 설문 -->
 <div id="guest" class="pg">
   <div class="lang-bar" id="lb-guest"></div>
-  <div class="hdr"><div class="tag tg" id="g-tag"></div><h1 id="g-h1"></h1><div class="sub" id="g-sub"></div></div>
-  <div class="pbw"><div class="pb"><div class="pf g" id="gp" style="width:0%"></div></div></div>
+  <div class="hdr">
+    <div class="coral-rule-sm"></div>
+    <div class="tag tg" id="g-tag"></div>
+    <h1 id="g-h1"></h1>
+    <div class="sub" id="g-sub"></div>
+  </div>
+  <div class="pbw"><div class="pb"><div class="pf" id="gp" style="width:0%"></div></div></div>
   <div id="gq1" class="qb"><div class="ql" id="gq1l"></div><div class="qt" id="gq1t"></div><div class="stars" id="st-ov"></div></div>
   <div id="gq2" class="qb" style="display:none"><div class="ql" id="gq2l"></div><div class="qt" id="gq2t"></div><div class="stars" id="st-fd"></div></div>
   <div id="gq3" class="qb" style="display:none"><div class="ql" id="gq3l"></div><div class="qt" id="gq3t"></div><div class="rg" id="rg-sv"></div></div>
   <div id="gq4" class="qb" style="display:none"><div class="ql" id="gq4l"></div><div class="qt" id="gq4t"></div><textarea id="g-txt"></textarea></div>
   <div class="ftr">
-    <button class="btn" onclick="goHome()" id="g-bk"></button>
-    <div style="display:flex;align-items:center;gap:9px"><span class="slbl" id="g-sl"></span><button class="btn pri" id="g-nx" onclick="gNext()"></button></div>
+    <button class="btn" onclick="goLangSelect()" id="g-bk"></button>
+    <div style="display:flex;align-items:center;gap:9px">
+      <span class="slbl" id="g-sl"></span>
+      <button class="btn pri" id="g-nx" onclick="gNext()"></button>
+    </div>
   </div>
 </div>
 
-
+<!-- 완료 (Coral callout) -->
 <div id="done" class="pg">
-  <div class="lang-bar" id="lb-done"></div>
   <div class="dwrap">
     <div class="dic">✓</div>
     <div class="dttl" id="d-ttl"></div>
     <div class="dsub" id="d-sub"></div>
-    <button class="btn pri" id="d-btn" onclick="goHome()"></button>
+    <button class="btn-done" id="d-btn" onclick="goLangSelect()"></button>
   </div>
 </div>
 
-</div>
+</div><!-- /card -->
 <script>
 const TX={
-  ko:{n:'한국어',hT:'Matina Lounge 설문',hS:'설문에 참여해 주세요',gT:'고객 만족도 조사',gD:'방문 경험·서비스·음식 품질을 평가해 주세요',gK:'⏱ 약 2분 · 4문항',qT:'QR코드로 바로 접속',qG:'고객 설문 QR',aN:'※ QR코드를 인쇄하거나 태블릿·키오스크 화면에 띄워 사용하실 수 있습니다.',gtag:'고객 만족도 조사',gH:'방문해 주셔서 감사합니다',gSb:'소중한 의견이 더 나은 서비스를 만드는 데 큰 힘이 됩니다',gQ:['전반적인 라운지 이용 만족도는 어떠셨나요?','음식·음료 품질은 어떠셨나요?','직원 서비스는 어떠셨나요?','개선되었으면 하는 점이 있으신가요? (선택)'],gSv:['매우 만족','만족','보통','아쉬움'],gPh:'자유롭게 작성해 주세요',bk:'처음으로',nx:'다음',sb:'제출',dT:'제출이 완료되었습니다',dS:'소중한 의견 감사합니다.\n더 나은 서비스로 보답하겠습니다.',dB:'처음으로 돌아가기'},
-  en:{n:'English',hT:'Matina Lounge Survey',hS:'We\'d love to hear from you',gT:'Guest Satisfaction Survey',gD:'Share your thoughts on your visit',gK:'⏱ 2 min · 4 questions',qT:'Scan to take the survey',qG:'Guest Survey',aN:'Tip: Print this QR code or display it on a tablet at the lounge entrance.',gtag:'Guest Satisfaction',gH:'Thank you for visiting us',gSb:'Your feedback means a lot and helps us serve you better',gQ:['How would you rate your overall lounge experience?','How was the food and beverage quality?','How did you find our staff\'s service?','Is there anything we could do better? (optional)'],gSv:['Excellent','Good','Fair','Poor'],gPh:'Feel free to share any comments',bk:'Home',nx:'Next',sb:'Submit',dT:'Thank you!',dS:'We appreciate you taking the time to share your feedback.\nWe look forward to welcoming you again.',dB:'Back to Home'},
-  zh:{n:'中文',hT:'Matina 贵宾室问卷',hS:'欢迎参与问卷调查',gT:'宾客满意度调查',gD:'请对本次到访体验进行评价',gK:'⏱ 约2分钟 · 4道题',qT:'扫描二维码参与',qG:'宾客问卷二维码',aN:'※ 可将二维码打印后张贴，或在平板电脑上展示。',gtag:'宾客满意度调查',gH:'感谢您的光临',gSb:'您的宝贵意见将帮助我们不断提升服务品质',gQ:['您对本次贵宾室整体体验的满意程度如何？','您对餐饮品质的评价如何？','您对员工服务的评价如何？','您有哪些改进建议？（选填）'],gSv:['非常满意','满意','一般','有待改善'],gPh:'欢迎留下您的意见',bk:'返回首页',nx:'下一题',sb:'提交',dT:'提交成功',dS:'感谢您抽出宝贵时间填写问卷。\n我们将认真参考您的意见，持续改进服务。',dB:'返回首页'},
-  ja:{n:'日本語',hT:'Matinaラウンジ アンケート',hS:'ぜひご意見をお聞かせください',gT:'お客様満足度調査',gD:'ご滞在中の体験についてお聞かせください',gK:'⏱ 約2分 · 4問',qT:'QRコードでアンケートに回答',qG:'アンケート QRコード',aN:'※ QRコードを印刷するか、タブレットに表示してご活用ください。',gtag:'お客様満足度調査',gH:'ご利用ありがとうございます',gSb:'いただいたご意見は、サービス向上に大切に活用いたします',gQ:['ラウンジ全体のご満足度はいかがでしたか？','お食事・お飲み物の品質はいかがでしたか？','スタッフのサービスはいかがでしたか？','お気づきの点やご要望があればお聞かせください（任意）'],gSv:['大変満足','満足','ふつう','不満'],gPh:'ご自由にお書きください',bk:'最初に戻る',nx:'次へ',sb:'送信',dT:'ご回答ありがとうございます',dS:'貴重なご意見をいただき、誠にありがとうございます。\n今後のサービス向上に役立ててまいります。',dB:'最初に戻る'}
+  ko:{n:'한국어',hT:'Matina Lounge 설문',hS:'설문에 참여해 주세요',gT:'고객 만족도 조사',gD:'방문 경험·서비스·음식 품질을 평가해 주세요',gK:'⏱ 약 2분 · 4문항',qT:'QR 코드로 바로 접속',qG:'고객 설문 QR',aN:'※ QR코드를 인쇄하거나 태블릿 화면에 띄워 사용하실 수 있습니다.',gtag:'고객 만족도 조사',gH:'방문해 주셔서 감사합니다',gSb:'소중한 의견이 더 나은 서비스를 만드는 데 큰 힘이 됩니다',gQ:['전반적인 라운지 이용 만족도는 어떠셨나요?','음식·음료 품질은 어떠셨나요?','직원 서비스는 어떠셨나요?','개선되었으면 하는 점이 있으신가요? (선택)'],gSv:['매우 만족','만족','보통','아쉬움'],gPh:'자유롭게 작성해 주세요',bk:'언어 선택',nx:'다음',sb:'제출',dT:'제출이 완료되었습니다',dS:'소중한 의견 감사합니다.\n더 나은 서비스로 보답하겠습니다.',dB:'처음으로 돌아가기'},
+  en:{n:'English',hT:'Matina Lounge Survey',hS:"We'd love to hear from you",gT:'Guest Satisfaction Survey',gD:'Share your thoughts on your visit',gK:'⏱ 2 min · 4 questions',qT:'Scan to take the survey',qG:'Guest Survey QR',aN:'Tip: Print this QR code or display it on a tablet at the lounge.',gtag:'Guest Satisfaction',gH:'Thank you for visiting us',gSb:'Your feedback means a lot and helps us serve you better',gQ:['How would you rate your overall lounge experience?','How was the food and beverage quality?',"How did you find our staff's service?",'Is there anything we could do better? (optional)'],gSv:['Excellent','Good','Fair','Poor'],gPh:'Feel free to share any comments',bk:'Language',nx:'Next',sb:'Submit',dT:'Thank you!',dS:'We appreciate you taking the time to share your feedback.\nWe look forward to welcoming you again.',dB:'Back to Home'},
+  zh:{n:'中文',hT:'Matina 贵宾室问卷',hS:'欢迎参与问卷调查',gT:'宾客满意度调查',gD:'请对本次到访体验进行评价',gK:'⏱ 约2分钟 · 4道题',qT:'扫描二维码参与',qG:'宾客问卷二维码',aN:'※ 可将二维码打印后张贴，或在平板电脑上展示。',gtag:'宾客满意度调查',gH:'感谢您的光临',gSb:'您的宝贵意见将帮助我们不断提升服务品质',gQ:['您对本次贵宾室整体体验的满意程度如何？','您对餐饮品质的评价如何？','您对员工服务的评价如何？','您有哪些改进建议？（选填）'],gSv:['非常满意','满意','一般','有待改善'],gPh:'欢迎留下您的意见',bk:'语言选择',nx:'下一题',sb:'提交',dT:'提交成功',dS:'感谢您抽出宝贵时间填写问卷。\n我们将认真参考您的意见，持续改进服务。',dB:'返回首页'},
+  ja:{n:'日本語',hT:'Matinaラウンジ アンケート',hS:'ぜひご意見をお聞かせください',gT:'お客様満足度調査',gD:'ご滞在中の体験についてお聞かせください',gK:'⏱ 約2分 · 4問',qT:'QRコードでアンケートに回答',qG:'アンケート QRコード',aN:'※ QRコードを印刷するか、タブレットに表示してご活用ください。',gtag:'お客様満足度調査',gH:'ご利用ありがとうございます',gSb:'いただいたご意見は、サービス向上に大切に活用いたします',gQ:['ラウンジ全体のご満足度はいかがでしたか？','お食事・お飲み物の品質はいかがでしたか？','スタッフのサービスはいかがでしたか？','お気づきの点やご要望があればお聞かせください（任意）'],gSv:['大変満足','満足','ふつう','不満'],gPh:'ご自由にお書きください',bk:'言語選択',nx:'次へ',sb:'送信',dT:'ご回答ありがとうございます',dS:'貴重なご意見をいただき、誠にありがとうございます。\n今後のサービス向上に役立ててまいります。',dB:'最初に戻る'}
 };
 const LANGS=['ko','en','zh','ja'];
 let lang='ko',gSt=1;
 function t(){return TX[lang]}
 function $(i){return document.getElementById(i)}
 function setLang(l){lang=l;renderPage(document.querySelector('.pg.active').id)}
-function langBar(cid){$(cid).innerHTML=LANGS.map(l=>`<button class="lb${l===lang?' on':''}" onclick="setLang('${l}')">${TX[l].n}</button>`).join('')}
+function langBar(cid){const el=$(cid);if(!el)return;el.innerHTML=LANGS.map(l=>`<button class="lb${l===lang?' on':''}" onclick="setLang('${l}')">${TX[l].n}</button>`).join('')}
 function show(id){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));$(id).classList.add('active');renderPage(id)}
+function goLangSelect(){gSt=1;show('lang-select')}
 function goHome(){gSt=1;show('home')}
 function go(){gSt=1;show('guest')}
+function pickLang(l){lang=l;gSt=1;show('guest')}
 function renderPage(id){
   const x=t();
   ['home','guest','done'].forEach(p=>langBar('lb-'+p));
   if(id==='home'){
     $('h-ttl').textContent=x.hT;$('h-sub').textContent=x.hS;
     $('hg-t').textContent=x.gT;$('hg-d').textContent=x.gD;$('hg-k').textContent=x.gK;
-    $('qr-ttl').textContent=x.qT;$('qrl-g').textContent=x.qG;
-    $('anote').textContent=x.aN;
+    $('qr-ttl').textContent=x.qT;$('qrl-g').textContent=x.qG;$('anote').textContent=x.aN;
   }
   if(id==='guest'){
     $('g-tag').textContent=x.gtag;$('g-h1').textContent=x.gH;$('g-sub').textContent=x.gSb;
@@ -188,19 +517,17 @@ async function gNext(){
   btn.disabled=false;
   show('done');
 }
-
-const BASE = 'https://matinawest.github.io/matinasurvey/';
-const GU = BASE+'?type=guest';
+const BASE='https://matinawest.github.io/matinasurvey/';
+const GU=BASE+'?type=guest';
 function makeQR(boxId,url,urlEl){
   const box=$(boxId);if(!box||box._done)return;box._done=true;box.innerHTML='';
   if(urlEl)$(urlEl).textContent=url;
-  try{new QRCode(box,{text:url,width:100,height:100,colorDark:'#1a1a1a',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M})}catch(e){box.textContent='QR'}
+  try{new QRCode(box,{text:url,width:100,height:100,colorDark:'#141413',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M})}catch(e){box.textContent='QR'}
 }
 renderPage('home');
 window.addEventListener('load',()=>{
   makeQR('qb-g',GU,'qu-g');
-  const p=new URLSearchParams(location.search).get('type');
-  if(p==='guest') go();
+  show('lang-select');
 });
 </script>
 </body>
